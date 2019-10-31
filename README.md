@@ -50,7 +50,7 @@ You need to set up your development environment before cloning the project.
 Now that you have development environment set up, you can proceed to clone the project.
 
 1. Choose a location for the project on your local computer and navigate to project folder in command prompt.
-2.  Run `https://github.com/jz200/crm-demo.git` in command prompt to clone the project.
+2.  Run `git clone https://github.com/jz200/crm-demo.git` in command prompt to clone the project.
 3.  Run `npm install` in command prompt to restore all dependencies specified in package.json. A folder named node-modules will be created.
 4.  Run `npm install -g json-server` to install json sever, which will create web service from JSON data.
 
