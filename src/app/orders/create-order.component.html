@@ -1,0 +1,47 @@
+<div class="bg-primary p-2 text-white">
+  <h5>Create Order</h5>
+</div>
+<p></p>
+<form #orderForm="ngForm" (ngSubmit)="save(order)" *ngIf="customers">
+  <div class="form-group">
+    <label for="customer">Customer</label>
+    <select id="customer" name="customer" appSelectValidator class="form-control" [(ngModel)]="order.customerId"
+      #customer="ngModel" [class.is-invalid]="customer.invalid && customer.touched" [class.is-valid]="customer.valid" [disabled]="addOrder">
+      <option value="-1">Select Customer</option>
+      <option *ngFor="let c of customers" [value]="c.id">
+        {{ c.firstName + " " + c.lastName }}
+      </option>
+    </select>
+    <span class="text-danger" *ngIf="customer.errors?.defaultSelected && customer.touched">
+      Customer is required.
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label for="orderDate">Order Date</label>
+    <input type="date" required id="orderDate" name="orderDate" class="form-control"
+      [class.is-invalid]="orderDate.invalid && orderDate.touched" [class.is-valid]="orderDate.valid"
+      [(ngModel)]="order.orderDate" #orderDate="ngModel" />
+    <span class="text-danger" *ngIf="orderDate.errors?.required && orderDate.touched">
+      Order Date is required.
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label for="dueDate">Due Date</label>
+    <input type="date" required id="dueDate" name="dueDate" class="form-control"
+      [class.is-invalid]="dueDate.invalid && dueDate.touched" [class.is-valid]="dueDate.valid"
+      [(ngModel)]="order.dueDate" #dueDate="ngModel" />
+    <span class="text-danger" *ngIf="dueDate.errors?.required && dueDate.touched">
+      Due Date is required.
+    </span>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
+    Create
+  </button>
+  &nbsp;&nbsp;
+  <button class="btn btn-secondary" type="button" routerLink="/orders">
+    Cancel
+  </button>
+</form>

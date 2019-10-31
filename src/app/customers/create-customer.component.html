@@ -1,0 +1,61 @@
+<div class="bg-primary p-2 text-white">
+  <h5>Create Customer</h5>
+</div>
+<p></p>
+<form #customerForm="ngForm" (ngSubmit)="save(customer)">
+  <div class="form-group"  >
+    <label for="firstName">First Name</label>
+    <input type="text" required id="firstName" name="firstName" class="form-control"  
+    [class.is-invalid]="firstName.invalid && firstName.touched"
+    [class.is-valid]="firstName.valid"
+    [(ngModel)]="customer.firstName" #firstName="ngModel"/>
+    <span class="text-danger" *ngIf="firstName.invalid && firstName.touched">
+      First Name is required.
+    </span>
+  </div>
+  <div class="form-group"  >
+      <label for="lastName">Last Name</label>
+      <input type="text" required id="lastName" name="lastName" class="form-control"  
+      [class.is-invalid]="lastName.invalid && lastName.touched"
+      [class.is-valid]="lastName.valid"
+      [(ngModel)]="customer.lastName" #lastName="ngModel"/>
+      <span class="text-danger" *ngIf="lastName.invalid && lastName.touched">
+        Last Name is required.
+      </span>
+    </div>
+    <div class="form-group"  >
+        <label for="email">Email</label>
+        <input type="text" required email id="email" name="email" class="form-control"  
+        [class.is-invalid]="email.invalid && email.touched"
+        [class.is-valid]="email.valid"
+        [(ngModel)]="customer.email" #email="ngModel"/>
+        <span class="text-danger" *ngIf="email.errors?.required && email.touched">
+          Email is required.
+        </span>
+        <span class="text-danger" *ngIf="email.errors?.email && email.touched">
+          Invalid Email
+        </span>
+      </div>
+      <div class="form-group"  >
+          <label for="phoneNumber">Phone Number</label>
+          <input type="tel" required id="phoneNumber" maxlength="10" pattern="^[2-9]\d{2}\d{3}\d{4}$"
+          name="phoneNumber" class="form-control"  
+          [class.is-invalid]="phoneNumber.invalid && phoneNumber.touched"
+          [class.is-valid]="phoneNumber.valid"
+          [(ngModel)]="customer.phoneNumber" #phoneNumber="ngModel"/>
+          <span class="text-danger" *ngIf="phoneNumber.errors?.required && phoneNumber.touched">
+            Phone Number is required.
+          </span>
+          <span class="text-danger" *ngIf="phoneNumber.errors?.pattern && phoneNumber.touched">
+              Invalid Phone Number
+            </span>
+        </div>
+      
+  <button type="submit" class="btn btn-primary" [disabled]="customerForm.invalid">
+    Create
+  </button>
+  &nbsp;&nbsp;
+  <button type="reset" class="btn btn-secondary">
+    Reset
+  </button>
+</form>

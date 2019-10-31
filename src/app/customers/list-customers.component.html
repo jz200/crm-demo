@@ -1,0 +1,50 @@
+<div class='row'>
+  <div class="col-3 text-secondary">
+    <form>
+      <p></p>
+      <h5>Filter Results <i class="fa fa-search"></i></h5>
+      <p></p>
+      <label for="firstName">First Name</label>
+      <input [(ngModel)]="firstName" class="form-control" id="firstName" name="firstName" type="text" />
+      <br />
+      <label for="lastName">Last Name</label>
+      <input [(ngModel)]="lastName" class="form-control" id="lastName" name="lastName" type="text" />
+      <br />
+      <label for="email">Email</label>
+      <input [(ngModel)]="email" class="form-control" id="email" name="email" type="text" />
+      <br />
+      <label for="phoneNumber">Phone</label>
+      <input [(ngModel)]="phoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" type="number"
+        maxlength="10" />
+      <br />
+      <button type="reset" class="btn btn-sm btn-secondary">Clear Filters</button>
+    </form>
+  </div>
+
+  <div class="col-9">
+    <div class="bg-primary p-2 text-white">
+      <h5>Customers
+        <button class="badge badge-pill badge-dark float-right" routerLink="/customers/create">
+          Create New
+        </button>
+      </h5>
+    </div>
+    <br />
+   
+    <div *ngIf="customers">
+      <div *ngFor="let c of pageCustomers">
+        <div (click)="viewDetail(c.id)">
+        <app-display-customer [customer]="c"  class="pointerCursor"></app-display-customer>
+        </div>
+      </div>
+    </div>
+    <p></p>
+    <div class="btn-group float-right" *ngIf="customers">
+      <button *ngFor="let page of pageNumbers" (click)="changePage(page)" class="btn btn-outline-primary"
+        [class.active]="page==selectedPage">
+        {{page}}
+      </button>
+    </div>
+
+  </div>
+</div>

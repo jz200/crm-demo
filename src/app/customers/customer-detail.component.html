@@ -1,0 +1,149 @@
+ <div class="p-2 text-primary">
+  <h4>Customer Detail</h4>
+</div>
+
+<div class="card m-1 p-1" *ngIf="customer">
+  <div class="card-header text-white bg-info">
+    <h5 class="card-title">{{ customer.firstName + ' ' + customer.lastName }}
+      <button (click)= "deleteCustomer()" class="btn btn-danger btn-sm float-right" *ngIf="orders && orders.length == 0">Delete</button>
+    </h5>
+  </div>
+
+  <div class="card-body bg-light">
+    <form #form="ngForm">
+      <h5 class="card-title text-info">Contact Info
+        <button class="btn btn-sm btn-info float-right" *ngIf="mode=='view'" (click)="mode='edit'">Edit</button>
+        <div class="btn-group-sm float-right">
+          <button class="btn btn-sm btn-info" (click)="saveCustomer(form)" *ngIf="mode=='edit'"
+            [disabled]="form.invalid">Save</button>
+          &nbsp;
+          <button class="btn btn-sm btn-info" (click)="mode='view'" *ngIf="mode=='edit'">Cancel</button>
+        </div>
+      </h5>
+      <div class="card-text" *ngIf="mode=='view'">
+        <div class="row ">
+          <div class="col-6">
+            <strong>First Name:</strong> {{ customer.firstName}}
+          </div>
+          <div class="col-6">
+            <strong>Last Name:</strong> {{ customer.lastName}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <strong>Email:</strong> {{ customer.email}}
+          </div>
+          <div class="col-6">
+            <strong>Phone Number:</strong> {{ customer.phoneNumber}}
+          </div>
+        </div>
+      </div>
+
+      <div class="card-text" *ngIf="mode=='edit'">
+        <div class="row ">
+          <div class="col-2">
+            <label for="firstName">First Name:</label>
+          </div>
+          <div class="col-3">
+            <input name="firstName" required id="firstName" class="form-control" [(ngModel)]="customer.firstName"
+              [class.is-invalid]="firstName.invalid && firstName.touched" #firstName="ngModel" />
+            <span class="text-danger" *ngIf="firstName.invalid && firstName.touched">
+              First Name is required.
+            </span>
+          </div>
+          <div class="col-1">
+          </div>
+          <div class="col-2">
+            <label for="lastName">Last Name:</label>
+          </div>
+          <div class="col-3">
+            <input type="text" required id="lastName" name="lastName" class="form-control"
+              [class.is-invalid]="lastName.invalid && lastName.touched" [(ngModel)]="customer.lastName"
+              #lastName="ngModel" />
+            <span class="text-danger" *ngIf="lastName.invalid && lastName.touched">
+              Last Name is required.
+            </span>
+          </div>
+        </div>
+        <p></p>
+        <div class="row">
+          <div class="col-2">
+            <label for="email">Email:</label>
+          </div>
+          <div class="col-3">
+            <input type="text" required email id="email" name="email" class="form-control"
+              [class.is-invalid]="email.invalid && email.touched" [(ngModel)]="customer.email" #email="ngModel" />
+            <span class="text-danger" *ngIf="email.errors?.required && email.touched">
+              Email is required.
+            </span>
+            <span class="text-danger" *ngIf="email.errors?.email && email.touched">
+              Invalid Email
+            </span>
+          </div>
+          <div class="col-1">
+          </div>
+          <div class="col-2">
+            <label for="phoneNumber">Phone Number:</label>
+          </div>
+          <div class="col-3">
+            <input type="tel" required id="phoneNumber" maxlength="10" pattern="^[2-9]\d{2}\d{3}\d{4}$"
+              name="phoneNumber" class="form-control" [class.is-invalid]="phoneNumber.invalid && phoneNumber.touched"
+              [(ngModel)]="customer.phoneNumber" #phoneNumber="ngModel" />
+            <span class="text-danger" *ngIf="phoneNumber.errors?.required && phoneNumber.touched">
+              Phone Number is required.
+            </span>
+            <span class="text-danger" *ngIf="phoneNumber.errors?.pattern && phoneNumber.touched">
+              Invalid Phone Number
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <p></p>
+    <p></p>
+
+    <h5 class="card-title text-info">Orders
+      <button class="btn btn-sm btn-info float-right" [routerLink]="['/orders/create']"
+        [queryParams]="{customerId: customer.id}">Add Order</button>
+    </h5>
+
+    <div *ngIf="orders && orders.length == 0">
+      No Orders.
+    </div>
+    <div *ngIf="orders && orders.length > 0 && orderLines">
+      <table class="table table-sm">
+        <thead>
+          <th>Order ID</th>
+          <th>Order Date</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Item Count</th>
+          <th>Order Sum</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of ordersWSum">
+            <td><a [routerLink]="['/orders/detail', order.id]">{{ order.id }}</a></td>
+            <td>{{ order.orderDate }}</td>
+            <td>{{ order.dueDate }}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.itemCount }}</td>
+            <td>{{ order.orderTotal }}</td>
+            <td>
+              <button class="btn btn-sm btn-info" [routerLink]="['/orders/detail', order.id]">
+                <i class="fa fa-info-circle"></i>
+              </button>
+           </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div>
+  <a [routerLink]="['/customers', {id: id}]" queryParamsHandling="preserve">
+    Back to Customer List
+  </a>
+</div>

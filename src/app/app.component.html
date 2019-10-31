@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col bg-light text-info">
+      <span class="navbar-brand float-right"><strong>CRM Demo</strong></span>
+      <a class="nav-link float-left" routerLink="/customers" routerLinkActive="font-weight-bold bg-white"[routerLinkActiveOptions]="{exact: true}">Customers</a>
+      <a class="nav-link float-left" routerLink="/orders" routerLinkActive="font-weight-bold bg-white" [routerLinkActiveOptions]="{exact: true}">Orders</a>
+    </div>
+  </div>
+  <div class="lds-roller" *ngIf="showLoadingIndicator">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

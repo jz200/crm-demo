@@ -1,0 +1,135 @@
+<div class="row">
+  <div class="col-4">
+    <h5>Add New Lines</h5>
+    <form [formGroup]="orderLineForm" (ngSubmit)="onSubmit()" *ngIf="products">
+      <div class="form-group">
+        <label for="product">Product</label>
+        <select class="form-control" id="product" name="product" formControlName="product"
+          [class.is-invalid]="formErrors.product" (blur)="logValidationErrors()">
+          <option [ngValue]="null" selected>Select Product</option>
+          <option *ngFor="let p of products" [value]="p.id">
+            {{ p.itemNumber }}
+          </option>
+        </select>
+        <span class="text-danger" *ngIf="formErrors.price">
+          {{formErrors.product}}
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="price">Unit Price</label>
+        <input class="form-control" id="price" name="price" formControlName="price"
+          [class.is-invalid]="formErrors.price" (blur)="logValidationErrors()" />
+        <span class="text-danger" *ngIf="formErrors.price">
+          {{formErrors.price}}
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="orderQty">Quantity</label>
+        <input class="form-control" id="orderQty" name="orderQty" formControlName="orderQty"
+          [class.is-invalid]="formErrors.orderQty" (blur)="logValidationErrors()" />
+        <span class="text-danger" *ngIf="formErrors.price">
+          {{formErrors.orderQty}}
+        </span>
+      </div>
+      <div class="btn-toolbar">
+        <button type="submit" class="btn btn-info btn-sm"
+          [disabled]="!orderLineForm.valid || (order && order.status=='Shipped')">
+          Add
+        </button>
+        &nbsp;&nbsp;
+        <button type="button" class="btn btn-info btn-sm" (click)="resetForm()">
+          Reset
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-8">
+    <h4 class="text-primary">Order # {{ orderId}}
+      <div class="btn-group-sm float-right">
+        <button class="btn btn-sm btn-success" (click)="markConfirmed()"
+          *ngIf="order && order.status=='Draft'">Confirm</button> &nbsp;
+        <button class="btn btn-sm btn-secondary" (click)="markVoided()"
+          *ngIf="order && order.status=='Draft'">Void</button>
+        <button class="btn btn-sm btn-warning" (click)="markShipped()"
+          *ngIf="order && order.status=='Confirmed'">Ship</button>
+        <button class="btn btn-sm btn-danger" (click)="deleteOrder()"
+          *ngIf="order && order.status=='Voided'">Delete</button>
+      </div>
+    </h4>
+    <p></p>
+    <div *ngIf="order && customer">
+      <div class="row">
+        <div class="col-6">
+          <strong>Customer:</strong> {{ customer.firstName + ' ' + customer.lastName }}
+        </div>
+        <div class="col-6">
+          <strong>Email:</strong> {{ customer.email }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <strong>Order Date:</strong> {{ order.orderDate | date: 'MM/dd/yyyy'}}
+        </div>
+        <div class="col-6">
+          <strong>Order Status:</strong> {{ order.status }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <strong>Due Date:</strong> {{ order.dueDate | date: 'MM/dd/yyyy' }}
+        </div>
+        <div class="col-6">
+          <strong>Ship Date:</strong> {{ order.shipDate ? (order.shipDate | date: 'MM/dd/yyyy') : 'TBD' }}
+        </div>
+      </div>
+    </div>
+
+    <p></p>
+    <div *ngIf="orderLines && orderLines.length == 0">
+      <h5 class="text-info">No details for this order yet.</h5>
+      <p>Please use the form on the left to add details.</p>
+    </div>
+    <table class="table table-sm bg-light text-right" *ngIf="orderLines && orderLines.length > 0 && products">
+      <thead>
+        <tr class="bg-info text-white">
+          <th class="text-center">Product</th>
+          <th>Unit Price</th>
+          <th>Quantity</th>
+          <th>Line Total</th>
+          <th *ngIf="order && order.status == 'Draft'"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let line of orderLinesWItemNo; let i = index">
+          <td class="text-center">{{line.itemNumber}}</td>
+          <td>{{line.unitPrice}}</td>
+          <td>{{line.orderQty}}</td>
+          <td>{{line.unitPrice * line.orderQty }}</td>
+          <td *ngIf="order && order.status == 'Draft'"><button class="btn btn-sm btn-outline-danger" (click)="deleteOrderLine(line.id)">
+              <i class="fa fa-remove"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot class="bg-info text-white">
+        <tr>
+          <td colspan="2">
+          </td>
+          <td>
+            {{orderTotal[0]}}
+          </td>
+          <td>
+            {{orderTotal[1] | currency}}
+          </td>
+          <td *ngIf="order && order.status == 'Draft'"></td>
+        </tr>
+      </tfoot>
+    </table>
+    <div *ngIf="order">
+      <a [routerLink]="['/customers/detail', order.customerId ]" class="btn-link">
+        Back to Customer Detail
+      </a>
+    </div>
+  </div>
+</div>

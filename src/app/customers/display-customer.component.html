@@ -1,0 +1,18 @@
+<div class="card m-1 p-1" [ngClass]="{'bg-light': id!=customer.id, 'bg-secondary text-white': id == customer.id}">
+  <h5>
+    {{customer.firstName + ' ' + customer.lastName}}
+    <button class="btn btn-outline-dark btn-sm float-right">
+      <i class="fa fa-info"></i>
+    </button>
+  </h5>
+  <div class="card-text p-1">
+    <div class="row">
+      <div class="col-6">
+        <i class="fa fa-envelope"></i> {{customer.email}}
+      </div>
+      <div class="col-6">
+        <i class="fa fa-phone"></i> {{customer.phoneNumber}}
+      </div>
+    </div>
+  </div>
+</div>
